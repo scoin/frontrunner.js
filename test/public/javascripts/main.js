@@ -23,7 +23,6 @@ window.onload = function(){
     var fr2 = FrontRunner(function(){
         var br2 = FrontRunner();
         br2.on("test4", function(data){
-            console.log("HEREEERE")
             br2.send("fourth", "success")
         })
         .on("test5", function(data){
@@ -56,5 +55,17 @@ window.onload = function(){
     .on("6.5", function(data){
         var test = document.getElementById("test6");
         test.innerHTML = data;
+    })
+
+    var fr3 = FrontRunner(function(worker){
+        worker.on("seventh", function(data){
+            worker.send("7.5", {"message": data.message})
+        })
+    })
+
+    fr3.send("seventh", {message: "success"})
+    fr3.on("7.5", function(data){
+        var test = document.getElementById("test7");
+        test.innerHTML = data.message;
     })
 }

@@ -76,6 +76,16 @@ describe("Test FrontRunner", function(){
             c.getText("#test6")
             .then(function(text){
                 expect(text).to.eql("success")
+                done()
+            })
+            .catch(function(err){
+                done(err)
+            })
+        })
+        it("should have an instance of FrontRunner available to it as an argument", function(done){
+            c.getText("#test7")
+            .then(function(text){
+                expect(text).to.eql("success")
                 c.end()
                 done()
             })
