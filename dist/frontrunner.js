@@ -17,7 +17,7 @@ function FrontRunner(opts){
     else if(__input === "function"){
         var fr = FrontRunner.toString();
         var fn = opts.toString();
-        var file = new Blob([fr, ";(", fn, ")();"], {type: 'application/javascript'});
+        var file = new Blob([fr, ";(", fn, ")(FrontRunner());"], {type: 'application/javascript'});
         data.settings.worker = self.URL.createObjectURL(file);
     }
 
@@ -28,13 +28,12 @@ function FrontRunner(opts){
     }
 
     var __onMessage = function (event){
-        for(var key in event.data){
-            if(data.listeners[key]){
-                data.listeners[key](event.data[key])
-            }
+        var key = Object.keys(event.data)[0];
+        if(data.listeners[key]){
+            data.listeners[key](event.data[key])
         }
     }
-
+    
     if(data.__isWorker){
         onmessage = __onMessage;
     }
