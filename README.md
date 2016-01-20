@@ -1,9 +1,9 @@
 FrontRunner.js
 =================
 
-FrontRunner is a lightweight wrapper on [HTML5 Web Workers](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers) that implements a switching system and a number of other features.
+FrontRunner is a lightweight (only 874 bytes minified) wrapper on [HTML5 Web Workers](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers) that implements a switching system and a number of other features.
 
-Using FrontRunner lets you send and receive specific messages between a Worker and your script using familiar jQuery style syntax.
+Using FrontRunner lets you send and receive specific messages between a Worker and your script using familiar syntax.
 
 FrontRunner also lets you spawn a worker by simply passing it a function, allowing you to write multi-threaded, client-side Javascript all in the same script.
 
@@ -54,16 +54,15 @@ _myworker.js_
 
 You can pass a function to FrontRunner instead of a script location. The contents of that function will be used to create the Worker, allowing you to have your code for both threads in the same script.
 
-You do not need to import FrontRunner on the worker side when you instantiate FrontRunner this way. It is made available for you.
+It is important to note that the function you pass will be entirely in it's own scope.
+
+You do not need to import or instantiate FrontRunner in your worker function. It is made available for you as an argument. 
 
 ```javascript
 
         //create a new worker with a function
 
-        var fr = FrontRunner(function(){
-
-            //create a worker instance of FrontRunner inside your function
-            var worker = FrontRunner();
+        var fr = FrontRunner(function(worker){
 
             worker.on("foo", function(data){
                 doSomething(data);
@@ -87,7 +86,6 @@ __event__ : string
 __data__: can be any datatype, including blobs
 
 Sends a message between the Worker and the Script,containing data for listeners listening for that event.
-
 
 ######FrontRunner.on(__event__, __callback__)
 
@@ -114,14 +112,13 @@ Test Suite Makefile
 
 More Tests
 
-Register with Bower
-
 
 ##Test
 The test suite is a simple express app running mocha and selenium. 
 
-To run the tests, cd into the test directory.
+To run the tests:
 
+        cd test
         npm install
         java -jar selenium-server-standalone-2.46.0.jar
         npm start
